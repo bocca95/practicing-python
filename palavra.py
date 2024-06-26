@@ -1,7 +1,6 @@
 import random
 
 def choosing_word():
-
     with open(r"exercicios\dicionario.txt", "r", encoding="utf-8") as arquivo:
         dictionary = arquivo.readlines()
 
@@ -12,66 +11,62 @@ def choosing_word():
     return chosen_word, int(word_size)
 
 def game_logic():
-    
     chosen_word, chosen_word_size = choosing_word()
     chosen_word = list(chosen_word)
     cloned_chosen_word = chosen_word[:]
     print(chosen_word)
-    mistakes, attempts = 0,0
-    players_word = [ '_' for i in range(chosen_word_size)]
+    mistakes, attempts = 0, 0
+    players_word = ['_' for _ in range(chosen_word_size)]
     vowels = ['a', 'e', 'i', 'o', 'u']
     fh_consonants = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm']
     sh_consonants = ['n', 'p', 'q', 'r', 's', 't', 'v', 'x', 'y', 'w', 'z']
     
-    missing_vowels, missing_fhconsonants, missing_shconsonants, correct_letters = False, False, False, 0
+    correct_letters = 0
     while True:
+        player_input = input("Escolha uma letra para tentar adicionar a palavra: ").lower()
         
-        players_input = input("Escolha uma letra para tentar adicionar a palavra: ")
-        if players_input not in chosen_word:
-            mistakes+=1
+        if len(player_input) != 1 or not player_input.isalpha():
+            print("Entrada inválida! Por favor, insira uma única letra.")
+            continue
+        
+        if player_input not in chosen_word:
+            mistakes += 1
         if mistakes == 1:
-            if correct_letters > 0:
-                print(f'{players_word}')
-            else: print(['_' for i in range(chosen_word_size)])
+            print(players_word if correct_letters > 0 else ['_' for _ in range(chosen_word_size)])
         if mistakes == 2:
-            for i in range(len(vowels)):
-                if vowels[i] in cloned_chosen_word:
-                    missing_vowels = True
-            for i in range(len(fh_consonants)):
-                if fh_consonants[i] in cloned_chosen_word:
-                    missing_fhconsonants = True
-            for i in range(len(sh_consonants)):
-                if sh_consonants[i] in cloned_chosen_word:
-                    missing_shconsonants = True
+            missing_vowels = any(vowel in cloned_chosen_word for vowel in vowels)
+            missing_fhconsonants = any(consonant in cloned_chosen_word for consonant in fh_consonants)
+            missing_shconsonants = any(consonant in cloned_chosen_word for consonant in sh_consonants)
+            
             if missing_vowels and missing_shconsonants and missing_fhconsonants:
-                print(f"Ainda faltam vogais e consoantes.")
+                print("Ainda faltam vogais e consoantes.")
             elif missing_vowels and missing_fhconsonants:
-                print(f"Ainda faltam vogais e consoantes da primeira metade do alfabeto.")
+                print("Ainda faltam vogais e consoantes da primeira metade do alfabeto.")
             elif missing_vowels and missing_shconsonants:
-                print(f"Ainda faltam vogais e consoantes da segunda metade do alfabeto.")
+                print("Ainda faltam vogais e consoantes da segunda metade do alfabeto.")
             elif missing_shconsonants and missing_fhconsonants:
-                print(f"Faltam apenas consoantes")
+                print("Faltam apenas consoantes.")
             elif missing_fhconsonants:
-                print(f"Faltam consoantes da primeira metade do alfabeto.")
+                print("Faltam consoantes da primeira metade do alfabeto.")
             elif missing_shconsonants:
-                print(f"Faltam consoantes da segunda metade do alfabeto.")
+                print("Faltam consoantes da segunda metade do alfabeto.")
             elif missing_vowels:
-                print(f"Faltam apenas vogais!")
+                print("Faltam apenas vogais!")
         if mistakes == 3:
             print(f"Você perdeu! A palavra era: {''.join(chosen_word)}")
             break
-        if players_input in chosen_word:
+        if player_input in chosen_word:
             for i in range(chosen_word_size):
-                for char in chosen_word:
-                    if chosen_word[i] == players_input:
-                        players_word[i] = players_input
-                        correct_letters +=1
-                        cloned_chosen_word[i] = ''
-            print(f"A letra: {players_input} está na palavra!")
-        attempts+=1
+                if chosen_word[i] == player_input:
+                    players_word[i] = player_input
+                    correct_letters += 1
+                    cloned_chosen_word[i] = ''
+            print(f"A letra: {player_input} está na palavra!")
+        attempts += 1
         
-        if players_word == chosen_word or players_input == '-':
-            print(f"Você acertou em {attempts} tentaivas!\nTambém possuiu {mistakes} erros! Bom trabalho!")
+        if players_word == chosen_word or player_input == '-':
+            print(f"Você acertou em {attempts} tentativas!\nTambém teve {mistakes} erros! Bom trabalho!")
             break
+
 if __name__ == '__main__':
     game_logic()
