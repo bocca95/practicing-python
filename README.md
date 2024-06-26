@@ -1,2 +1,3 @@
-# practicing-python
-Prática de python para aprendizado.
+# Aprendizado
+
+Este repositório é para demonstrar aprendizados e projetos.
