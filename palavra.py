@@ -2,7 +2,7 @@ import random
 
 def choosing_word():
 
-    with open(r"C:\Users\henri\Desktop\python\exercicios\dicionario.txt", "r", encoding="utf-8") as arquivo:
+    with open(r"exercicios\dicionario.txt", "r", encoding="utf-8") as arquivo:
         dictionary = arquivo.readlines()
 
     dictionary = [line.strip() for line in dictionary]
@@ -20,8 +20,8 @@ def game_logic():
     mistakes, attempts = 0,0
     players_word = [ '_' for i in range(chosen_word_size)]
     vowels = ['a', 'e', 'i', 'o', 'u']
-    firsthalf_consonants = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm']
-    secondhalf_consonants = ['n', 'p', 'q', 'r', 's', 't', 'v', 'x', 'y', 'w', 'z']
+    fh_consonants = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm']
+    sh_consonants = ['n', 'p', 'q', 'r', 's', 't', 'v', 'x', 'y', 'w', 'z']
     
     missing_vowels, missing_fhconsonants, missing_shconsonants, correct_letters = False, False, False, 0
     while True:
@@ -37,11 +37,11 @@ def game_logic():
             for i in range(len(vowels)):
                 if vowels[i] in cloned_chosen_word:
                     missing_vowels = True
-            for i in range(len(firsthalf_consonants)):
-                if firsthalf_consonants[i] in cloned_chosen_word:
+            for i in range(len(fh_consonants)):
+                if fh_consonants[i] in cloned_chosen_word:
                     missing_fhconsonants = True
-            for i in range(len(secondhalf_consonants)):
-                if secondhalf_consonants[i] in cloned_chosen_word:
+            for i in range(len(sh_consonants)):
+                if sh_consonants[i] in cloned_chosen_word:
                     missing_shconsonants = True
             if missing_vowels and missing_shconsonants and missing_fhconsonants:
                 print(f"Ainda faltam vogais e consoantes.")
